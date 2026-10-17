@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class newTeleOp extends LinearOpMode {
@@ -15,6 +16,9 @@ public class newTeleOp extends LinearOpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    // Servo object
+    // This servo changes the pitch of the ramp, hence the name
+    private Servo ramp;
 
     // Driving motor speed variables
     double FL;
@@ -51,7 +55,8 @@ public class newTeleOp extends LinearOpMode {
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
 
-
+        // Initializes the servos
+        ramp = hardwareMap.get(Servo.class, "ramp");
 
         // Assigns directions to the motors so that they all spin the same direction
         /* the directions that the motors should go as long as the encoders aren't broken
@@ -112,6 +117,14 @@ public class newTeleOp extends LinearOpMode {
             backLeft.setPower(BL);
             backRight.setPower(BR);
 
+            if (gamepad1.a) {
+
+                ramp.setPosition(0.0);
+
+            } else if (gamepad1.b) {
+
+                ramp.setPosition(1.0);
+            }
         }
     }
 }
