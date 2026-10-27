@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
@@ -16,6 +16,8 @@ public class newTeleOp extends LinearOpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+
+    private DcMotor shoter;
 
     // Servo object
     // This servo changes the pitch of the ramp, hence the name
@@ -56,6 +58,8 @@ public class newTeleOp extends LinearOpMode {
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
 
+        shoter = hardwareMap.dcMotor.get("shoter");
+
         // Initializes the servos
         ramp = hardwareMap.get(Servo.class, "ramp");
 
@@ -71,6 +75,8 @@ public class newTeleOp extends LinearOpMode {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.FORWARD);
+
+        shoter.setDirection(DcMotor.Direction.FORWARD);
 
         // Makes sure the robot doesn't move after initialized, so we don't get penalized
         waitForStart();
@@ -125,6 +131,14 @@ public class newTeleOp extends LinearOpMode {
             } else if (gamepad1.b) {
 
                 ramp.setPosition(1.0);
+
+            } else if (gamepad2.a) {
+
+                shoter.setPower(1);
+
+            } else {
+
+                shoter.setPower(0);
             }
         }
     }
