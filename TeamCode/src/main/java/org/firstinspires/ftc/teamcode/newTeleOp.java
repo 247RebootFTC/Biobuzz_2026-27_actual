@@ -18,6 +18,7 @@ public class newTeleOp extends LinearOpMode {
     private DcMotor backRight;
 
     private DcMotor shoter;
+    private DcMotor intake;
 
     // Servo object
     // This servo changes the pitch of the ramp, hence the name
@@ -59,6 +60,7 @@ public class newTeleOp extends LinearOpMode {
         backRight = hardwareMap.dcMotor.get("backRight");
 
         shoter = hardwareMap.dcMotor.get("shoter");
+        intake = hardwareMap.dcMotor.get("intake");
 
         // Initializes the servos
         ramp = hardwareMap.get(Servo.class, "ramp");
@@ -76,7 +78,9 @@ public class newTeleOp extends LinearOpMode {
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.FORWARD);
 
+        /** These directions are subject to change */
         shoter.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.FORWARD);
 
         // Makes sure the robot doesn't move after initialized, so we don't get penalized
         waitForStart();
@@ -136,8 +140,13 @@ public class newTeleOp extends LinearOpMode {
 
                 shoter.setPower(1);
 
+            } else if (gamepad2.dpad_up) {
+
+                intake.setPower(1);
+
             } else {
 
+                intake.setPower(0);
                 shoter.setPower(0);
             }
         }
