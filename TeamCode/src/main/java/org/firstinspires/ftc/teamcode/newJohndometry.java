@@ -37,14 +37,13 @@ public class newJohndometry extends LinearOpMode {
     private Follower follower;
     private final PoseFactory pfac = PoseFactory.degrees();
 
-    private Path park() {
+    /// We need to figure out where the robot starts
+    private final Pose startPose = pfac.of(0,0,0);
+    private final Pose endPose = pfac.of(0,30,0);
 
+    private Path park() {
         return line(startPose, endPose).linear(startPose, endPose);
     }
-
-    /** We need to figure out where the robot starts */
-    private final Pose startPose = pfac.of(0,0,90);
-    private final Pose endPose = pfac.of(50,0,90);
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -64,10 +63,11 @@ public class newJohndometry extends LinearOpMode {
         // Initializes the servos
         ramp = hardwareMap.get(Servo.class, "ramp");
 
-
         Scheduler.reset();
+
         follower = Constants.create(hardwareMap);
         follower.setPose(startPose);
+        follower.update();
 
         // Assigns directions to the motors so that they all spin the same direction
         /* the directions that the motors should go as long as the encoders aren't broken
@@ -91,7 +91,11 @@ public class newJohndometry extends LinearOpMode {
             follower.update();
             Scheduler.execute();
 
-            
+            //telemetry.addData("X", follower.pose().x());
+            //telemetry.addData("Y", follower.pose().x());
+            //telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
+            //telemetry.addData("Follower mode", follower.mode());
+            //telemetry.update();
         }
     }
 }
