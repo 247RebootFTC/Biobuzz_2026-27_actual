@@ -16,6 +16,7 @@ import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
+import com.pedropathing.ivy.Command;
 
 @Autonomous(name = "John Odometry Copy", group = "Autonomous")
 public class johnodometrycopy extends LinearOpMode {
@@ -39,6 +40,17 @@ public class johnodometrycopy extends LinearOpMode {
         return line(forwardPose, strafeLeftPose).linear(forwardPose, strafeLeftPose);
     }
 
+    // 3. PROCEDURE: Groups paths sequentially (Forward -> Pause -> Strafe)
+    private Command johndometryProcedure() {
+
+        return sequential(
+
+                follow(follower, driveForward()),
+                waitMs(350), // Pauses briefly after driving forward
+                follow(follower, strafeLeft())
+        );
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -54,22 +66,18 @@ public class johnodometrycopy extends LinearOpMode {
 
         waitForStart();
 
-        // 3. EXECUTION: Groups paths sequentially (Forward -> Pause -> Strafe)
-        schedule(
-                sequential(
-                        follow(follower, driveForward()),
-                        waitMs(350), // Pauses briefly after driving forward
-                        follow(follower, strafeLeft())
-                )
-        );
+        // 4. SCHEDULING & EXECUTION: schedule the routine (Forward -> Pause -> Strafe)
+        schedule(johndometryProcedure());
 
-        // 4. MAIN EXECUTION LOOP
+        // 5. MAIN EXECUTION LOOP
         while (opModeIsActive()) {
             follower.update();
             Scheduler.execute();
 
             telemetry.addData("X Position", follower.pose().x());
             telemetry.addData("Y Position", follower.pose().y());
+            telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
+            telemetry.addData("Follower Mode", follower.mode());
             telemetry.update();
         }
     }

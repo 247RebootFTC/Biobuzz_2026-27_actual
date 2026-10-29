@@ -89,6 +89,7 @@ public class newTeleOp extends LinearOpMode {
 
             // Reset the motor speed variables to 0
             // This is in the event that one isn't set to 0, so we don't get penalized
+            // This also resets the motor speeds if there are no inputs
             FL = 0.0;
             FR = 0.0;
             BL = 0.0;
