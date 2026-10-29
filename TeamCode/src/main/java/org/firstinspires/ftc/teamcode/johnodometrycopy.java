@@ -18,7 +18,7 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.pedropathing.ivy.Command;
 
-@Autonomous(name = "John Odometry Copy", group = "Autonomous")
+@Autonomous
 public class johnodometrycopy extends LinearOpMode {
 
     private Servo ramp;

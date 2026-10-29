@@ -78,7 +78,7 @@ public class newTeleOp extends LinearOpMode {
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.FORWARD);
 
-        /** These directions are subject to change */
+        /// These directions are subject to change
         //shoter.setDirection(DcMotor.Direction.FORWARD);
         //intake.setDirection(DcMotor.Direction.FORWARD);
 
