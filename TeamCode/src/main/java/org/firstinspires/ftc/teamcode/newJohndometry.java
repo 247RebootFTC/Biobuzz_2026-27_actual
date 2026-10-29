@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -90,6 +91,9 @@ public class newJohndometry extends LinearOpMode {
 
             follower.update();
             Scheduler.execute();
+            Pose startPose = new Pose(0, 0, Math.toRadians(0));
+             Pose forwardPose = new Pose(24, 0, Math.toRadians(0)); // Moves 24 inches straight forward
+
 
             //telemetry.addData("X", follower.pose().x());
             //telemetry.addData("Y", follower.pose().x());
