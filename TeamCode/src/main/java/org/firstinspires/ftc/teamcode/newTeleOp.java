@@ -129,26 +129,46 @@ public class newTeleOp extends LinearOpMode {
             backLeft.setPower(BL);
             backRight.setPower(BR);
 
-            if (gamepad1.a) {
+            // If Gunner presses RT, the shooter goes
+            // Otherwise, it is off
+            if (gamepad2.right_trigger >= 0.2) {
 
-                ramp.setPosition(0.0);
-
-            } else if (gamepad1.b) {
-
-                ramp.setPosition(1.0);
-
-            } else if (gamepad2.a) {
-
-                //shoter.setPower(1);
-
-            } else if (gamepad2.dpad_up) {
-
-                //intake.setPower(1);
+                /// This value may change
+                shoter.setPower(1);
 
             } else {
 
-                //intake.setPower(0);
-                //shoter.setPower(0);
+                shoter.setPower(0);
+            }
+
+            // If the Gunner presses LT, the intake goes
+            // If the Gunner presses LB, the intake goes backwards
+            // If the Gunner presses B, the intake goes slowly
+            if (gamepad2.left_trigger >= 0.2) {
+
+                intake.setPower(1.0);
+
+            } else if (gamepad2.left_bumper) {
+
+                intake.setPower(-0.5);
+
+            } else if (gamepad2.b) {
+
+                intake.setPower(0.2);
+
+            } else {
+
+                intake.setPower(0.0);
+            }
+
+            // If the Gunner presses A, the ramp changes pitch
+            if (gamepad2.a) {
+
+                ramp.setPosition(0.1);
+
+            } else {
+
+                ramp.setPosition(0.0);
             }
         }
     }
