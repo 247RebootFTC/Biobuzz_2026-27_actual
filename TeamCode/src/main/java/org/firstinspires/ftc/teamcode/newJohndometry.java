@@ -66,7 +66,7 @@ public class newJohndometry extends LinearOpMode {
 
         Scheduler.reset();
 
-        follower = Constants.create(hardwareMap);
+        //follower = Constants.create(hardwareMap);
         follower.setPose(startPose);
         follower.update();
 

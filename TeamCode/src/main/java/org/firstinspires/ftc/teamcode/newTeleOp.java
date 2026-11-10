@@ -7,8 +7,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
+
 @TeleOp
 public class newTeleOp extends LinearOpMode {
+
+    // 1. Declare processor and portal at the class level
+    private AprilTagProcessor aprilTag;
+    private VisionPortal visionPortal;
 
     // Driving motor objects
     // The names refer to the location of the motor, and which wheel it controls
@@ -59,8 +70,8 @@ public class newTeleOp extends LinearOpMode {
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
 
-        //shoter = hardwareMap.dcMotor.get("shoter");
-        //intake = hardwareMap.dcMotor.get("intake");
+        shoter = hardwareMap.dcMotor.get("shoter");
+        intake = hardwareMap.dcMotor.get("intake");
 
         // Initializes the servos
         ramp = hardwareMap.get(Servo.class, "ramp");
@@ -76,16 +87,27 @@ public class newTeleOp extends LinearOpMode {
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
         /// These directions are subject to change
-        //shoter.setDirection(DcMotor.Direction.FORWARD);
-        //intake.setDirection(DcMotor.Direction.FORWARD);
+        shoter.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.FORWARD);
 
         // Makes sure the robot doesn't move after initialized, so we don't get penalized
         waitForStart();
 
         while (opModeIsActive()) {
+
+            // 2. Initialize the AprilTag processor
+            aprilTag = new AprilTagProcessor.Builder()
+                    // Add specific settings here if needed (e.g., tag library)
+                    .build();
+
+// 3. Build the VisionPortal linking it to your webcam name in hardware map
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "webcam 1"))
+                    .addProcessor(aprilTag)
+                    .build();
 
             // Reset the motor speed variables to 0
             // This is in the event that one isn't set to 0, so we don't get penalized
@@ -94,6 +116,7 @@ public class newTeleOp extends LinearOpMode {
             FR = 0.0;
             BL = 0.0;
             BR = 0.0;
+
 
             // This inputs the joystick analog values to the joystick variables.
             // YRight is not used at the moment.
@@ -134,21 +157,29 @@ public class newTeleOp extends LinearOpMode {
             if (gamepad2.right_trigger >= 0.2) {
 
                 /// This value may change
-                shoter.setPower(1);
+                //shoter.setPower(0.4);
+                shoter.setPower(0.47);
+            }else if(gamepad2.y) {
 
+                shoter.setPower(-1.0);
+            }else if(gamepad2.x) {
+                shoter.setPower(-.5);
+            }else if (gamepad2.right_bumper){
+                shoter.setPower(1.0);
             } else {
 
                 shoter.setPower(0);
             }
+
 
             // If the Gunner presses LT, the intake goes
             // If the Gunner presses LB, the intake goes backwards
             // If the Gunner presses B, the intake goes slowly
             if (gamepad2.left_trigger >= 0.2) {
 
-                intake.setPower(1.0);
+                intake.setPower(-1.0);
 
-            } else if (gamepad2.left_bumper) {
+            }else if (gamepad2.left_bumper) {
 
                 intake.setPower(-0.5);
 
@@ -164,12 +195,36 @@ public class newTeleOp extends LinearOpMode {
             // If the Gunner presses A, the ramp changes pitch
             if (gamepad2.a) {
 
-                ramp.setPosition(0.1);
+                ramp.setPosition(0.2);
 
             } else {
 
-                ramp.setPosition(0.0);
+                ramp.setPosition(0.3);
             }
+
+            double axial   = -gamepad1.left_stick_y;
+            double lateral =  gamepad1.right_stick_x;
+            double yaw     =  gamepad1.left_stick_x;
+            // Apply power to your drive motors here...
+
+            // --- APRILTAG PROCESSING IN LOOP ---
+            List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+
+            for (AprilTagDetection detection : currentDetections) {
+                if (detection.ftcPose != null) {
+                    // You now have access to:
+                    // detection.id -> The Tag ID
+                    // detection.ftcPose.x -> Lateral distance (left/right) in inches
+                    // detection.ftcPose.y -> Forward/backward distance in inches
+                    // detection.ftcPose.bearing -> Angle to the tag in degrees
+
+                    telemetry.addData("Target ID", detection.distanceUnit);
+                    telemetry.addData("Range (Y)", "%.1f inches", detection.ftcPose.y);
+                    telemetry.addData("Bearing", "%.1f degrees", detection.ftcPose.bearing);
+                }
+            }
+            telemetry.update();
         }
+        visionPortal.close();
     }
 }
