@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -13,6 +12,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
+
+///I made this comment in Neovim btw
 
 @TeleOp
 public class newTeleOp extends LinearOpMode {
@@ -52,6 +53,7 @@ public class newTeleOp extends LinearOpMode {
     // Joystick sensitivity variables.  Linearly changes the speed the motors move.
     // orthogonalScale is speed of forwards, backwards, and strafing movement.
     //turningScale is speed of rotation
+    ///all comments that are green should be green because they are green
     double orthogonalScale = 1;
     double turningScale = 0.65;
 
@@ -89,7 +91,7 @@ public class newTeleOp extends LinearOpMode {
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.REVERSE);
 
-        /// These directions are subject to change
+        // These directions are subject to change
         shoter.setDirection(DcMotor.Direction.FORWARD);
         intake.setDirection(DcMotor.Direction.FORWARD);
 
