@@ -19,8 +19,8 @@ import java.util.List;
 public class newTeleOp extends LinearOpMode {
 
     // 1. Declare processor and portal at the class level
-    private AprilTagProcessor aprilTag;
-    private VisionPortal visionPortal;
+   /* private AprilTagProcessor aprilTag;
+    private VisionPortal visionPortal;*/
 
     // Driving motor objects
     // The names refer to the location of the motor, and which wheel it controls
@@ -34,7 +34,7 @@ public class newTeleOp extends LinearOpMode {
 
     // Servo object
     // This servo changes the pitch of the ramp, hence the name
-    private Servo ramp;
+    //private Servo ramp;
 
     // Driving motor speed variables
     double FL;
@@ -76,7 +76,7 @@ public class newTeleOp extends LinearOpMode {
         intake = hardwareMap.dcMotor.get("intake");
 
         // Initializes the servos
-        ramp = hardwareMap.get(Servo.class, "ramp");
+        //ramp = hardwareMap.get(Servo.class, "ramp");
 
         // Assigns directions to the motors so that they all spin the same direction
         /* the directions that the motors should go as long as the encoders aren't broken
@@ -101,15 +101,15 @@ public class newTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             // 2. Initialize the AprilTag processor
-            aprilTag = new AprilTagProcessor.Builder()
+            /*aprilTag = new AprilTagProcessor.Builder()
                     // Add specific settings here if needed (e.g., tag library)
                     .build();
 
-// 3. Build the VisionPortal linking it to your webcam name in hardware map
+            // 3. Build the VisionPortal linking it to your webcam name in hardware map
             visionPortal = new VisionPortal.Builder()
                     .setCamera(hardwareMap.get(WebcamName.class, "webcam 1"))
                     .addProcessor(aprilTag)
-                    .build();
+                    .build();*/
 
             // Reset the motor speed variables to 0
             // This is in the event that one isn't set to 0, so we don't get penalized
@@ -194,7 +194,7 @@ public class newTeleOp extends LinearOpMode {
                 intake.setPower(0.0);
             }
 
-            // If the Gunner presses A, the ramp changes pitch
+           /* // If the Gunner presses A, the ramp changes pitch
             if (gamepad2.a) {
 
                 ramp.setPosition(0.2);
@@ -202,7 +202,7 @@ public class newTeleOp extends LinearOpMode {
             } else {
 
                 ramp.setPosition(0.3);
-            }
+            }*/
 
             double axial   = -gamepad1.left_stick_y;
             double lateral =  gamepad1.right_stick_x;
@@ -210,7 +210,7 @@ public class newTeleOp extends LinearOpMode {
             // Apply power to your drive motors here...
 
             // --- APRILTAG PROCESSING IN LOOP ---
-            List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+            /*List<AprilTagDetection> currentDetections = aprilTag.getDetections();
 
             for (AprilTagDetection detection : currentDetections) {
                 if (detection.ftcPose != null) {
@@ -225,8 +225,8 @@ public class newTeleOp extends LinearOpMode {
                     telemetry.addData("Bearing", "%.1f degrees", detection.ftcPose.bearing);
                 }
             }
-            telemetry.update();
+            telemetry.update();*/
         }
-        visionPortal.close();
+        //visionPortal.close();
     }
 }
