@@ -21,7 +21,7 @@ import com.pedropathing.ivy.Command;
 @Autonomous
 public class johnodometrycopy extends LinearOpMode {
 
-    private Servo ramp;
+    //private Servo ramp;
     private Follower follower;
     private final PoseFactory pfac = PoseFactory.degrees();
 
@@ -57,7 +57,7 @@ public class johnodometrycopy extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        ramp = hardwareMap.get(Servo.class, "ramp");
+        //ramp = hardwareMap.get(Servo.class, "ramp");
 
         Scheduler.reset();
         follower = Constants.create(hardwareMap);

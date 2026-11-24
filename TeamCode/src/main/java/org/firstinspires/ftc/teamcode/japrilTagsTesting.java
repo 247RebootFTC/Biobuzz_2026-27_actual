@@ -13,7 +13,6 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagSingleDetection;
 
-
 import java.util.List;
 
 @Autonomous
@@ -51,8 +50,8 @@ public class japrilTagsTesting extends LinearOpMode {
         vision = vbuilder.build();*/
 
         vision = new VisionPortal.Builder()
-            .setCamera(hardwareMap.get(WebcamName.class, "Webcma 1"))
-            .setCameraResolution(new Size(1280, 720))
+            .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+            .setCameraResolution(new Size(640, 480))
             .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
             .addProcessor(april)
             .enableLiveView(true)
@@ -62,11 +61,11 @@ public class japrilTagsTesting extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            List<AprilTagDetection> currentDetections = april.getDetections();
-            telemetry.addData("# AprilTags Detected", currentDetections.size());
+            List<AprilTagDetection> ATDs = april.getDetections();
+            telemetry.addData("# AprilTags Detected", ATDs.size());
 
             // Step through the list of detections and display info for each one.
-            for (AprilTagDetection detection : currentDetections) {
+            for (AprilTagDetection detection : ATDs) {
                 if (detection instanceof AprilTagSingleDetection) {
                     AprilTagSingleDetection singleDet = (AprilTagSingleDetection) detection;
 
@@ -79,6 +78,7 @@ public class japrilTagsTesting extends LinearOpMode {
                         telemetry.addLine(String.format("\n==== (ID %d) Unknown", singleDet.id));
                         telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", singleDet.center.x, singleDet.center.y));
                     }
+
                 } else {
                     AprilTagClusterDetection clusterDet = (AprilTagClusterDetection) detection;
                     telemetry.addLine(String.format("\n==== Tag Cluster (%s)", clusterDet.metadata.name));

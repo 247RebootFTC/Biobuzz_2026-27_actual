@@ -24,7 +24,7 @@ import com.pedropathing.ivy.Command;
 @Autonomous
 public class johndometryShoot extends LinearOpMode {
 
-    private Servo ramp;
+    //private Servo ramp;
 
     private DcMotor shoter;
     private DcMotor intake;
@@ -68,7 +68,7 @@ public class johndometryShoot extends LinearOpMode {
         intake = hardwareMap.dcMotor.get("intake");
 
         // Initializes the servos
-        ramp = hardwareMap.get(Servo.class, "ramp");
+        //ramp = hardwareMap.get(Servo.class, "ramp");
 
         /// These directions are subject to change
         shoter.setDirection(DcMotor.Direction.FORWARD);
@@ -88,7 +88,7 @@ public class johndometryShoot extends LinearOpMode {
         while (opModeIsActive()) {
             shoter.setPower(0.45);
             waitMs(1000);
-            ramp.setPosition(.2);
+            //ramp.setPosition(.2);
             waitMs(1000);
 
 
