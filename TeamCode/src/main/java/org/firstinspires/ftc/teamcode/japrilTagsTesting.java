@@ -38,6 +38,7 @@ public class japrilTagsTesting extends LinearOpMode {
             .setDrawTagID(true)
             .setDrawTagOutline(true)
             .setDrawAxes(true)
+            .setLensIntrinsics(1399.68, 1399.68, 678.647, 334.736)
             .build();
 
         /// This is an older implementation of the next block.
@@ -51,7 +52,7 @@ public class japrilTagsTesting extends LinearOpMode {
 
         vision = new VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-            .setCameraResolution(new Size(640, 480))
+            .setCameraResolution(new Size(1280, 720))
             .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
             .addProcessor(april)
             .enableLiveView(true)
@@ -61,11 +62,11 @@ public class japrilTagsTesting extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            List<AprilTagDetection> ATDs = april.getDetections();
-            telemetry.addData("# AprilTags Detected", ATDs.size());
+            List<AprilTagDetection> currentDetections = april.getDetections();
+            telemetry.addData("# AprilTags Detected", currentDetections.size());
 
             // Step through the list of detections and display info for each one.
-            for (AprilTagDetection detection : ATDs) {
+            for (AprilTagDetection detection : currentDetections) {
                 if (detection instanceof AprilTagSingleDetection) {
                     AprilTagSingleDetection singleDet = (AprilTagSingleDetection) detection;
 
@@ -78,7 +79,6 @@ public class japrilTagsTesting extends LinearOpMode {
                         telemetry.addLine(String.format("\n==== (ID %d) Unknown", singleDet.id));
                         telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", singleDet.center.x, singleDet.center.y));
                     }
-
                 } else {
                     AprilTagClusterDetection clusterDet = (AprilTagClusterDetection) detection;
                     telemetry.addLine(String.format("\n==== Tag Cluster (%s)", clusterDet.metadata.name));
@@ -93,6 +93,8 @@ public class japrilTagsTesting extends LinearOpMode {
             telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
             telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
             telemetry.addLine("RBE = Range, Bearing & Elevation");
+
+            telemetry.update();
 
         }
 
