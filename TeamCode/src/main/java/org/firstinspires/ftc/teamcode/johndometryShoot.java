@@ -75,7 +75,7 @@ public class johndometryShoot extends LinearOpMode {
         intake.setDirection(DcMotor.Direction.FORWARD);
 
         Scheduler.reset();
-        follower = Constants.create(hardwareMap);
+        //follower = Constants.create(hardwareMap);
         follower.setPose(startPose);
         follower.update();
 

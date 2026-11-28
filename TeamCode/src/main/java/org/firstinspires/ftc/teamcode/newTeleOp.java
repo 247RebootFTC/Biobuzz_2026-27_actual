@@ -168,7 +168,9 @@ public class newTeleOp extends LinearOpMode {
                 shoter.setPower(-.5);
             }else if (gamepad2.right_bumper){
                 shoter.setPower(1.0);
-            } else {
+            } else if (gamepad2.a){
+                shoter.setPower(.75);
+            }else {
 
                 shoter.setPower(0);
             }

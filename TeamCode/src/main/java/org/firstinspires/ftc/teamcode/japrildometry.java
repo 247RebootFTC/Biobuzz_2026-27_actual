@@ -45,17 +45,29 @@ public class japrildometry extends LinearOpMode {
     private final Pose strafeRightIntermediate = pfac.of(70.75, 30, 90);
     private Pose aprilPose;
 
-    // 2. PATH METHODS: Defining each single movement step cleanly
     private Path driveToShooting() {
 
-        return curve(startPose, strafeRightIntermediate, aprilPose).linear(startPose, aprilPose);
+        return line(strafeRightIntermediate, aprilPose).linear(strafeRightIntermediate, aprilPose);
+    }
+
+    // 2. PATH METHODS: Defining each single movement step cleanly
+    private Path driveToIntermediate() {
+
+        return line(startPose, strafeRightIntermediate).linear(startPose, strafeRightIntermediate);
     }
 
     // 3. PROCEDURE: Groups paths sequentially (Forward -> Pause -> Strafe)
     private Command johndometryProcedure() {
 
         return sequential(
-            follow(follower, driveToShooting())
+            follow(follower, driveToIntermediate())
+        );
+    }
+
+    private Command inOpModeProc() {
+
+        return sequential(
+                follow(follower, driveToShooting())
         );
     }
 
@@ -70,6 +82,7 @@ public class japrildometry extends LinearOpMode {
             .setDrawTagID(true)
             .setDrawTagOutline(true)
             .setDrawAxes(true)
+            .setLensIntrinsics(1399.68, 1399.68, 678.647, 334.736)
             .build();
 
         VisionPortal vision = new VisionPortal.Builder()
@@ -123,7 +136,7 @@ public class japrildometry extends LinearOpMode {
                     telemetry.addLine(String.format(Locale.US, "PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
                     telemetry.addLine(String.format(Locale.US, "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
 
-                    if (Objects.equals(clusterDet.metadata.name, "BLUE AUDIENCE") && aprilPose != null) {
+                    if (Objects.equals(clusterDet.metadata.name, "BLUE AUDIENCE") && aprilPose != null && !Scheduler.isRunning(johndometryProcedure())) {
 
                         /// Old, keep for reference
                         /*aprilPose = new Pose3D(
@@ -148,6 +161,9 @@ public class japrildometry extends LinearOpMode {
                             follower.pose().y() + detection.ftcPose.x - 72,
                             follower.pose().heading() + detection.ftcPose.bearing
                         );
+                        follower.setPose(strafeRightIntermediate);
+                        follower.update();
+                        schedule(inOpModeProc());
                     }
                 }
             }

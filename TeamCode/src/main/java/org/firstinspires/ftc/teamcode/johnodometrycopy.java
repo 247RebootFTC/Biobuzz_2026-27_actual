@@ -60,7 +60,7 @@ public class johnodometrycopy extends LinearOpMode {
         //ramp = hardwareMap.get(Servo.class, "ramp");
 
         Scheduler.reset();
-        follower = Constants.create(hardwareMap);
+
         follower.setPose(startPose);
         follower.update();
 
